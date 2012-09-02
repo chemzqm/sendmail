@@ -76,6 +76,7 @@ npm install
     -g --grep <text>               grep text in all emails
 
   ```
+
 ## Notice
 
 Multi profile support and attachment is not supported yet.
