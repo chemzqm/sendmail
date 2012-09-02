@@ -10,7 +10,7 @@ var program = require('commander'),
 program
   .version('0.1.0')
   .usage('[options] [number|filename]')
-  .option('-l --list', 'show all mails with filename list subject')
+  .option('-l --list', 'show all mails with filename number subject')
   .option('-e --edit <number|filename>', 'edit previous mail and send')
   .option('-d --delete <number|filename>', 'remove previous mail')
   .option('-c --cat <number|filename>', 'show email content')

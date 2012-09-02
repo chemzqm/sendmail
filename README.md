@@ -75,7 +75,7 @@ npm install
 
     -h, --help                     output usage information
     -V, --version                  output the version number
-    -l --list                      show all mails with filename list subject
+    -l --list                      show all mails with filename number subject
     -e --edit <number|filename>    edit previous mail and send
     -d --delete <number|filename>  remove previous mail
     -c --cat <number|filename>     show email content
