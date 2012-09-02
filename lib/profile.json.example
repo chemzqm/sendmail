@@ -1,0 +1,17 @@
+{
+  "server":{
+    "USER":"[name]", 
+    "PASSWord":"[password]", 
+    "HOST":"[remote host]", 
+    "SSL":[true/false],
+    "TLS":[true/false],
+    "PORT":[port]
+  },
+  "headers":{
+    "from":"[firstname lastname <yourename@xxx.com>]"
+  },
+  "footer":"Thanks,<br />[yourname]\n",
+  "contacts":{
+    "chemzqm":"Jack zhao <chemzqm@gmail.com>"
+  }
+}
