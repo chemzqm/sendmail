@@ -42,17 +42,23 @@ npm install
 ## Usage
 
 * Make sure path `~/bin` is included in `$PATH`, if not, add below to your file `~/.bashrc`
+
   ``` bash
   export $PATH=$PATH:~/bin
   ```
+
 * Enable sendmail by :
+
   ``` bash
   $ ln -s /full/path/to/bin/sendmail ~/bin/sendmail
   ```
+
 * Send a new email:
+
   ``` bash
   $ sendmail
   ```
+
 * Get help:
   ``` bash
   $ sendmail -h
