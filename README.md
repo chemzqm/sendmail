@@ -59,6 +59,12 @@ npm install
   $ sendmail
   ```
 
+  with optional file content as email content
+
+  ``` bash
+  $ sendmail filename
+  ```
+
 * Get help:
   ``` bash
   $ sendmail -h

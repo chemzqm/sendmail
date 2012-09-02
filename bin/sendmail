@@ -3,12 +3,14 @@
 var program = require('commander'),
     exec = require('child_process').exec,
     clog = require('clog'),
+    fs = require('fs'),
     path = require('path'),
     sendmail = require('../');
     
 program
   .version('0.1.0')
   .usage('[options] [number|filename]')
+  .option('-  --stdin', 'get email content from stdin')
   .option('-l --list', 'show all mails with filename list subject')
   .option('-e --edit <number|filename>', 'edit previous mail and send')
   .option('-d --delete <number|filename>', 'remove previous mail')
@@ -101,7 +103,8 @@ else if(program.cat){
     return;
   }
   getEmails(function(mail){
-    if(mail.number == program.cat){
+    var cs = program.cat.split(',');
+      if(~cs.indexOf(mail.number)){
       cat(mail.name + ".email");
     }
   });
@@ -112,5 +115,12 @@ else if(program.grep){
   grep(program.grep);
 }
 else{
-  sendmail();
+  if(program.args[0]){
+    fs.readFile(program.args[0], function(err, data){
+      if(err) clog.error(err);
+      sendmail(null, data);
+    });
+  }else{
+    sendmail();
+  }
 }
