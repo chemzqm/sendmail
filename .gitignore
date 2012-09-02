@@ -1,4 +1,4 @@
 test
 node_modules
 mails
-lib/profile.json
+lib/*.json
