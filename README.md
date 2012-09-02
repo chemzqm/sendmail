@@ -11,10 +11,10 @@ npm install
 
 ## Configuration
   
-* change file `sendmail/lib/profile.json.example` to
+* Change file `sendmail/lib/profile.json.example` to
   `sendmail/lib/profile.json`.
-* change text in `[]` of profile.json to your settings.
-* below is an example of gmail settings:
+* Change text in `[]` of profile.json to your settings.
+* Below is an example of gmail settings:
 
   ``` json
   {
@@ -37,6 +37,39 @@ npm install
 
   Headers is the default head you want to set for your email, including `from cc to subject` etc.
 
-  Contaccts is used for convenient input of contacts emails, all the contacts's names will be added to the end of email file you are editing, and what you need to do is just type the `property name` of contacts seperated by `,` to the fileds `to` and/or `cc`, the property name will be converted to property value before email sending.
+  Contacts is used for convenient input of contacts emails, all the contact's names will be added to the end of email file you are editing, and what you need to do is just type the `property name` of contacts seperated by `,` to the fields `to` and/or `cc`, the property name will be converted to property value before email sending.
 
+## Usage
 
+* Make sure path `~/bin` is included in `$PATH`, if not, add below to your file `~/.bashrc`
+  ``` bash
+  export $PATH=$PATH:~/bin
+  ```
+* Enable sendmail by :
+  ``` bash
+  $ ln -s /full/path/to/bin/sendmail ~/bin/sendmail
+  ```
+* Send a new email:
+  ``` bash
+  $ sendmail
+  ```
+* Get help:
+  ``` bash
+  $ sendmail -h
+
+  Usage: sendmail [options] [number|filename]
+
+  Options:
+
+    -h, --help                     output usage information
+    -V, --version                  output the version number
+    -l --list                      show all mails with filename list subject
+    -e --edit <number|filename>    edit previous mail and send
+    -d --delete <number|filename>  remove previous mail
+    -c --cat <number|filename>     show email content
+    -g --grep <text>               grep text in all emails
+
+  ```
+## Notice
+
+Multi profile support and attachment is not supported yet.
