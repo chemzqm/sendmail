@@ -102,7 +102,6 @@ else if(program.cat){
     return;
   }
   var cs = program.cat.split(',');
-  console.log(cs);
   getEmails(function(mail){
     if(~cs.indexOf(mail.number + '')){
       cat(mail.name + ".email");
