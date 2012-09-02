@@ -16,7 +16,7 @@ npm install
 * change text in `[]` of profile.json to your settings.
 * below is an example of gmail settings:
 
-```
+``` json
 {
   "server":{
     "USER":"chemzqm", 
