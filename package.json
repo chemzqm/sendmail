@@ -1,0 +1,34 @@
+{
+  "name": "chemzqm",
+  "author": "chemzqm@gmail.com",
+  "version": "0.1.0",
+  "description": "send email using vim and markdown syntax",
+  "homepage": "http://github.com/chemzqm/sendmail",
+  "dependencies": ["emailjs >= 0.1.14","auto-marked >= 0.1.0","commander >= 1.0.3"],
+  "keywords": [
+    "mail",
+    "vim",
+    "markdown"
+  ],
+  "main": "./index.js",
+  "bin":{
+    "sendmail" : "./bin/sendmail"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chemzqm/sendmail.git"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://www.opensource.org/licenses/mit-license.php"
+  }],
+  "bugs" : {
+    "url" : "http://github.com/chemzqm/sendmail/issues"
+  },
+  "engines": {
+    "node": ">= 0.8.5"
+  }
+}

@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+
+var program = require('commander'),
+    exec = require('child_process').exec,
+    clog = require('clog'),
+    path = require('path'),
+    sendmail = require('../');
+    
+program
+  .version('0.1.0')
+  .usage('[options] [number]')
+  .option('-l --list', 'show all mails with filename listnumber subject')
+  .option('-e --edit <number|filname>', 'edit previous mail and send')
+  .option('-d --delete <number|filname>', 'remove previous mail')
+  .option('-c --cat <number|filename>', 'show email content')
+  .option('-g --grep <text>', 'grep text in all emails')
+  .parse(process.argv);
+
+function fix(val, number){
+  var res = val + "",l = res.length;
+  if(res.length < number){
+    for(;l < number; l++){
+      res += " ";
+    }
+  }
+  return res;
+}
+
+var maildir = path.resolve(__dirname, '../mails');
+function getEmails(cb){
+  var child = exec('grep -r "^subject" .|sort -r',{
+      cwd: maildir
+    },
+    function(err, stdout, stderr){
+      if(err) clog.error(err);
+      var lines = stdout.split('\n');
+      for(var i=0; i < lines.length; i++){
+        line = lines[i];
+        var match = line.match(/^\.\/(\d+).+?subject:(.*)/);
+        if(match){
+          cb({
+            number : i,
+            name : match[1],
+            subject : match[2]
+          })
+        }
+      }
+    }
+  );
+}
+
+function cat(filename){
+  exec('cat ' + filename ,{
+    cwd : maildir
+  },function(err, stdout, stderr){
+    if(err) clog.error(err);
+    console.log(stdout);
+  });
+}
+
+function grep(text){
+  exec('grep -r --color=always ' + text + ' .',{
+    cwd : maildir
+  },function(err, stdout, stderr){
+    if(err) clog.error(err);
+    console.log(stdout);
+  });
+}
+if(program.list){
+  console.log("file     number subject");
+  getEmails(function(mail){
+    console.log(mail.name + " " + mail.number + "      " + mail.subject);
+  });
+}
+else if(program.edit){
+  if(/\.email$/.test(program.edit)){
+    sendmail(program.edit);
+    return;
+  }
+  getEmails(function(mail){
+    if(mail.number == program.edit){
+      sendmail(mail.name);
+    }
+  });
+}
+else if(program.delete){
+  var ds = program.delete.split(',');
+  getEmails(function(mail){
+    if(~ds.indexOf(mail.number + '')){
+      exec('rm '+ mail.name + '.email',{
+        cwd : maildir
+      },function(err){
+        if(err) clog.error(err);
+      });
+    }
+  });
+}
+else if(program.cat){
+  if(/\.email$/.test(program.cat)){
+    cat(program.cat);
+    return;
+  }
+  getEmails(function(mail){
+    if(mail.number == program.cat){
+      cat(mail.name + ".email");
+    }
+  });
+}
+else if(program.grep){
+  var args = program.args,
+      second = args.length > 0 ? args[0]:false;
+  grep(program.grep);
+}
+else{
+  sendmail();
+}
