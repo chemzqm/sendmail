@@ -80,3 +80,7 @@ npm install
 ## Notice
 
 Multi profile support and attachment is not supported yet.
+
+## License
+
+MIT <3
