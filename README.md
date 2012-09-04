@@ -19,21 +19,24 @@ npm install
   ``` json
   {
     "server":{
-      "USER":"chemzqm", 
-      "PASSWord":"********", 
-      "HOST":"smtp.gmail.com", 
-      "SSL":true
+      "user":"chemzqm", 
+      "domain":"[127.0.0.1]",
+      "password":"********", 
+      "host":"smtp.gmail.com", 
+      "port":465
+        authentication : "login",        // auth login is supported; anything else is no auth
+      "ssl":true
     },
     "headers":{
       "from":"chemzqm <chemzqm@gmail.com>"
     },
-    "footer":"Thanks,<br />Jack\n",
+    "footer":"Thanks,<br />Jack\n",  // will be added to the end of your email
     "contacts":{
       "chemzqm":"chemzqm <chemzqm@gmail.com>"
     }
   }
   ```
-  Server settings is the same as project: [emailjs](https://github.com/eleith/emailjs).
+  Server settings is the same as project: [mailder](https://github.com/Marak/node_mailer).
 
   Headers is the default head you want to set for your email, including `from cc to subject` etc.
 
