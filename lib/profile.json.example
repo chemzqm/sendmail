@@ -1,11 +1,11 @@
 {
   "server":{
-    "USER":"[name]", 
-    "PASSWord":"[password]", 
-    "HOST":"[remote host]", 
-    "SSL":[true/false],
-    "TLS":[true/false],
-    "PORT":[port]
+    "user":    "[name]", 
+    "password":"[password]", 
+    "host":    "[remote host]", 
+    "ssl":     [true/false],
+    "tls":     [true/false],
+    "port":    [port]
   },
   "headers":{
     "from":"[firstname lastname <yourename@xxx.com>]"

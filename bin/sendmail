@@ -8,14 +8,17 @@ var program = require('commander'),
     sendmail = require('../');
     
 program
-  .version('0.1.0')
+  .version('0.1.1')
   .usage('[options] [number|filename]')
   .option('-l --list', 'show all mails with filename number subject')
   .option('-e --edit <number|filename>', 'edit previous mail and send')
   .option('-d --delete <number|filename>', 'remove previous mail')
   .option('-c --cat <number|filename>', 'show email content')
   .option('-g --grep <text>', 'grep text in all emails')
+  .option('-q --quiet', 'send email without using vim to edit')
+  .option('-p --profile <name>', 'use profile when sending email specified by name')
   .parse(process.argv);
+
 
 function fix(val, number){
   var res = val + "",l = res.length;
@@ -67,21 +70,14 @@ function grep(text){
     console.log(stdout);
   });
 }
+var options = {
+  profile: program.profile,
+  quiet: program.quiet
+};
 if(program.list){
   console.log("file     number subject");
   getEmails(function(mail){
     console.log(mail.name + " " + mail.number + "      " + mail.subject);
-  });
-}
-else if(program.edit){
-  if(/\.email$/.test(program.edit)){
-    sendmail(program.edit);
-    return;
-  }
-  getEmails(function(mail){
-    if(mail.number == program.edit){
-      sendmail(mail.name);
-    }
   });
 }
 else if(program.delete){
@@ -113,13 +109,27 @@ else if(program.grep){
       second = args.length > 0 ? args[0]:false;
   grep(program.grep);
 }
+else if(program.edit){
+  if(/\.email$/.test(program.edit)){
+    options.file = program.edit;
+    sendmail(options);
+    return;
+  }
+  getEmails(function(mail){
+    if(mail.number == program.edit){
+      options.file = mail.name;
+      sendmail(options);
+    }
+  });
+}
 else{
   if(program.args[0]){
     fs.readFile(program.args[0], function(err, data){
       if(err) clog.error(err);
-      sendmail(null, data);
+      options.content = data;
+      sendmail(options);
     });
   }else{
-    sendmail();
+    sendmail(options);
   }
 }
