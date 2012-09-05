@@ -20,12 +20,10 @@ npm install
   {
     "server":{
       "user":"chemzqm", 
-      "domain":"[127.0.0.1]",
       "password":"********", 
       "host":"smtp.gmail.com", 
-      "port":465
-        authentication : "login",        // auth login is supported; anything else is no auth
-      "ssl":true
+      "port":587
+      "tls":true
     },
     "headers":{
       "from":"chemzqm <chemzqm@gmail.com>"
@@ -36,7 +34,7 @@ npm install
     }
   }
   ```
-  Server settings is the same as project: [mailder](https://github.com/Marak/node_mailer).
+  Server settings is the same as project: [emailjs](https://github.com/eleith/emailjs).
 
   Headers is the default head you want to set for your email, including `from cc to subject` etc.
 
@@ -80,9 +78,11 @@ npm install
     -V, --version                  output the version number
     -l --list                      show all mails with filename number subject
     -e --edit <number|filename>    edit previous mail and send
-    -d --delete <number|filename>  remove previous mail
-    -c --cat <number|filename>     show email content
+    -s --send <number|filename>    send email without using vim to edit
+    -d --delete <number|filename>  remove email, could be number separated by comma like: 0,1,2
+    -c --cat <number|filename>     show email content, coulad be number separated by comma like: 0,1,2
     -g --grep <text>               grep text in all emails
+    -p --profile <name>            use profile when sending email specified by name
 
   ```
 
@@ -92,4 +92,4 @@ Multi profile support and attachment is not supported yet.
 
 ## License
 
-MIT <3
+**MIT**

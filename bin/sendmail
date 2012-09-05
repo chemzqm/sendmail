@@ -8,27 +8,17 @@ var program = require('commander'),
     sendmail = require('../');
     
 program
-  .version('0.1.1')
+  .version('0.1.2')
   .usage('[options] [number|filename]')
+  .description('edit a new email and send if no arguments except profile exist')
   .option('-l --list', 'show all mails with filename number subject')
   .option('-e --edit <number|filename>', 'edit previous mail and send')
-  .option('-d --delete <number|filename>', 'remove previous mail')
-  .option('-c --cat <number|filename>', 'show email content')
+  .option('-s --send <number|filename>', 'send email without using vim to edit')
+  .option('-d --delete <number|filename>', 'remove email, could be number separated by comma like: 0,1,2')
+  .option('-c --cat <number|filename>', 'show email content, coulad be number separated by comma like: 0,1,2')
   .option('-g --grep <text>', 'grep text in all emails')
-  .option('-q --quiet', 'send email without using vim to edit')
   .option('-p --profile <name>', 'use profile when sending email specified by name')
   .parse(process.argv);
-
-
-function fix(val, number){
-  var res = val + "",l = res.length;
-  if(res.length < number){
-    for(;l < number; l++){
-      res += " ";
-    }
-  }
-  return res;
-}
 
 var maildir = path.resolve(__dirname, '../mails');
 function getEmails(cb){
@@ -71,8 +61,7 @@ function grep(text){
   });
 }
 var options = {
-  profile: program.profile,
-  quiet: program.quiet
+  profile: program.profile
 };
 if(program.list){
   console.log("file     number subject");
@@ -109,14 +98,16 @@ else if(program.grep){
       second = args.length > 0 ? args[0]:false;
   grep(program.grep);
 }
-else if(program.edit){
+else if(program.edit || program.send){
+  var file = program.edit || program.send;
+  options.quiet = program.send ? true:false;
   if(/\.email$/.test(program.edit)){
-    options.file = program.edit;
+    options.file = file;
     sendmail(options);
     return;
   }
   getEmails(function(mail){
-    if(mail.number == program.edit){
+    if(mail.number == file){
       options.file = mail.name;
       sendmail(options);
     }
