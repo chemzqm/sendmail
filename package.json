@@ -1,5 +1,5 @@
 {
-  "name": "chemzqm",
+  "name": "node_sendmail",
   "author": "chemzqm@gmail.com",
   "version": "0.1.2",
   "description": "send email using vim and markdown syntax",
