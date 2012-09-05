@@ -61,7 +61,8 @@ function grep(text){
   });
 }
 var options = {
-  profile: program.profile
+  profile: program.profile,
+  quiet: program.send ? true:false
 };
 if(program.list){
   console.log("file     number subject");
@@ -100,7 +101,6 @@ else if(program.grep){
 }
 else if(program.edit || program.send){
   var file = program.edit || program.send;
-  options.quiet = program.send ? true:false;
   if(/\.email$/.test(program.edit)){
     options.file = file;
     sendmail(options);
