@@ -13,7 +13,7 @@ program
   .description('edit a new email and send if no arguments except profile exist')
   .option('-l --list', 'show all mails with filename number subject')
   .option('-e --edit <number|filename>', 'edit previous mail and send')
-  .option('-s --send <number|filename>', 'send email without using vim to edit')
+  .option('-s --send', 'send email without using vim to edit')
   .option('-d --delete <number|filename>', 'remove email, could be number separated by comma like: 0,1,2')
   .option('-c --cat <number|filename>', 'show email content, coulad be number separated by comma like: 0,1,2')
   .option('-g --grep <text>', 'grep text in all emails')
@@ -64,6 +64,10 @@ var options = {
   profile: program.profile,
   quiet: program.send ? true:false
 };
+var cb = function(err, msg){
+  if(err) clog.error(err);
+  else clog.debug(msg);
+};
 if(program.list){
   console.log("file     number subject");
   getEmails(function(mail){
@@ -103,27 +107,24 @@ else if(program.edit || program.send){
   var file = program.edit || program.send;
   if(/\.email$/.test(program.edit)){
     options.file = file;
-    sendmail(options);
+    sendmail(options, cb);
     return;
   }
   getEmails(function(mail){
     if(mail.number == file){
       options.file = mail.name;
-      sendmail(options);
+      sendmail(options, cb);
     }
   });
 }
 else{
-  var cb = function(err, msg){
-    if(err) clog.error(err);
-    else clog.debug(msg);
-  };
-  if(program.args[0]){
+  if(program.args[0]) {
     fs.readFile(program.args[0], function(err, data){
       if(err) clog.error(err);
-      options.content = data;
-      sendmail(options, cb);
-  }else{
-    sendmail(options, cb);
-  }
+      else {
+        options.content = data;
+        sendmail(options, cb);
+      }
+    });
+  }else sendmail(options, cb);
 }
