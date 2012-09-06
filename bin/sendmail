@@ -114,13 +114,16 @@ else if(program.edit || program.send){
   });
 }
 else{
+  var cb = function(err, msg){
+    if(err) clog.error(err);
+    else clog.debug(msg);
+  };
   if(program.args[0]){
     fs.readFile(program.args[0], function(err, data){
       if(err) clog.error(err);
       options.content = data;
-      sendmail(options);
-    });
+      sendmail(options, cb);
   }else{
-    sendmail(options);
+    sendmail(options, cb);
   }
 }
