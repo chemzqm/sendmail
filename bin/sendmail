@@ -130,3 +130,4 @@ else{
     });
   }else sendmail(options, cb);
 }
+// vim:syntax=javascript:
