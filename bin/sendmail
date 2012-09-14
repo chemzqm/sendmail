@@ -6,7 +6,7 @@ var program = require('commander'),
     fs = require('fs'),
     path = require('path'),
     sendmail = require('../');
-    
+
 program
   .version('0.1.2')
   .usage('[options] [number|filename]')
@@ -19,7 +19,7 @@ program
   .option('-g --grep <text>', 'grep text in all emails')
   .option('-p --profile <name>', 'use profile when sending email specified by name')
   .parse(process.argv);
-
+var DEBUG = false;
 var maildir = path.resolve(__dirname, '../mails');
 function getEmails(cb){
   var child = exec('grep -r "^subject" .|sort -r',{
@@ -66,7 +66,9 @@ var options = {
 };
 var cb = function(err, msg){
   if(err) clog.error(err);
-  else clog.debug(msg);
+  else if(DEBUG === true){
+    clog.debug(msg);
+  }
 };
 if(program.list){
   console.log("file     number subject");
