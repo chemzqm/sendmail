@@ -39,6 +39,10 @@ npm install
   Headers is the default head you want to set for your email, including `from cc to subject` etc.
 
   Contacts is used for convenient input of contacts emails, all the contact's names will be added to the end of email file you are editing, and what you need to do is just type the `property name` of contacts seperated by `,` to the fields `to` and/or `cc`, the property name will be converted to property value before email sending.
+* Use above command to add highlight support:
+  ```bash
+  cp $sendmail/email.vim ~/.vim/syntax/
+  ```
 
 ## Usage
 
