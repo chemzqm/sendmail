@@ -2,12 +2,22 @@
 
   Sendmail is a perfect tool for programmers who prefer to use terminal vim as editor and want to write complicated email easily with [markdown](http://daringfireball.net/projects/markdown/syntax) syntax and [highlight](http://softwaremaniacs.org/soft/highlight/en/) enabled.
 
+  **Attachments**, **embeded images**, **load content from file**, **syntax highlight** are supported.
+
 ## Install
-``` bash
-git clone https://github.com/chemzqm/sendmail.git
-cd sendmail
-npm install
-```
+
+Make sure path `~/bin` is included in `$PATH`, if not, add below to your file `~/.bashrc`
+
+  ``` bash
+  export $PATH=$PATH:~/bin
+  ```
+
+  ``` bash
+  git clone https://github.com/chemzqm/sendmail.git
+  cd sendmail
+  npm install
+  ln -s bin/sendmail ~/bin/sendmail
+  ```
 
 ## Configuration
   
@@ -19,38 +29,36 @@ npm install
   ``` json
   {
     "server":{
-      "user":"chemzqm", 
-      "password":"********", 
+      "auth":{
+        "user":"yourname", 
+        "pass":"yourpassword"
+      },
       "host":"smtp.gmail.com", 
       "port":587
-      "tls":true
     },
     "headers":{
       "from":"chemzqm <chemzqm@gmail.com>"
     },
-    "footer":"Thanks,<br />Jack\n",  // will be added to the end of your email
+    "footer":"Thanks,<br />Jack\n",
     "contacts":{
-      "chemzqm":"chemzqm <chemzqm@gmail.com>"
+      "chemzqm":"chemzqm <chemzqm@gmail.com>",
+      "qzhao":"Jack zhao <qzhao@tibco-support.com>"
     }
   }
   ```
-  Server settings is the same as project: [emailjs](https://github.com/eleith/emailjs).
+Server settings is the same as project: [nodemailer](http://github.com/andris9/nodemailer).
 
-  Headers is the default head you want to set for your email, including `from cc to subject` etc.
+Headers is the default head you want to set for your email, including `from cc to subject` etc.
 
-  Contacts is used for convenient input of contacts emails, all the contact's names will be added to the end of email file you are editing, and what you need to do is just type the `property name` of contacts seperated by `,` to the fields `to` and/or `cc`, the property name will be converted to property value before email sending.
-* Use above command to add highlight support:
+Contacts is used for convenient input of contacts emails, all the contact's names will be added to the end of email file you are editing, and what you need to do is just type the `property name` of contacts seperated by `,` to the fields `to` and/or `cc`, the property name will be converted to property value before email sending.
+
+## Enable vim highlight
+
   ```bash
-  cp $sendmail/email.vim ~/.vim/syntax/
+  cp /path/to/sendmail/email.vim ~/.vim/syntax/
   ```
 
 ## Usage
-
-* Make sure path `~/bin` is included in `$PATH`, if not, add below to your file `~/.bashrc`
-
-  ``` bash
-  export $PATH=$PATH:~/bin
-  ```
 
 * Enable sendmail by :
 
@@ -69,8 +77,18 @@ npm install
   ``` bash
   $ sendmail filename
   ```
+* Mutiple support
+  
+  The email fields 'to', 'cc', 'attachment' could be multiple values seperated by ','
 
-* Get help:
+
+* Send *embeded image*, use the following tag in the html sention
+  ``` 
+  @img('/path/to/file'[, 'imagename'])
+  ```
+  Notice image name is *optional*
+
+* Command line help:
   ``` bash
   $ sendmail -h
 
@@ -81,19 +99,16 @@ npm install
     -h, --help                     output usage information
     -V, --version                  output the version number
     -l --list                      show all mails with filename number subject
-    -e --edit <number|filename>    edit previous mail and send
-    -s --send <number|filename>    send email without using vim to edit
+    -e --edit <number|filename>    edit previous mail by number or filename and send
+    -q --quiet                     send email without using vim to edit
     -d --delete <number|filename>  remove email, could be number separated by comma like: 0,1,2
-    -c --cat <number|filename>     show email content, coulad be number separated by comma like: 0,1,2
+    -c --cat <number>              show email content, could be number separated by comma like: 0,1,2
     -g --grep <text>               grep text in all emails
     -p --profile <name>            use profile when sending email specified by name
 
   ```
 
-## Notice
-
-Multi profile support and attachment is not supported yet.
 
 ## License
 
-**MIT**
+MIT

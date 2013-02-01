@@ -3,19 +3,20 @@
 var program = require('commander'),
     exec = require('child_process').exec,
     clog = require('clog'),
+    tty = require('tty'),
     fs = require('fs'),
     path = require('path'),
     sendmail = require('../');
 
 program
-  .version('0.1.2')
+  .version('0.2.1')
   .usage('[options] [number|filename]')
   .description('edit a new email and send if no arguments except profile exist')
   .option('-l --list', 'show all mails with filename number subject')
-  .option('-e --edit <number|filename>', 'edit previous mail and send')
-  .option('-s --send', 'send email without using vim to edit')
+  .option('-e --edit <number|filename>', 'edit previous mail by number or filename and send')
+  .option('-q --quiet', 'send email without using vim to edit')
   .option('-d --delete <number|filename>', 'remove email, could be number separated by comma like: 0,1,2')
-  .option('-c --cat <number|filename>', 'show email content, coulad be number separated by comma like: 0,1,2')
+  .option('-c --cat <number>', 'show email content, could be number separated by comma like: 0,1,2')
   .option('-g --grep <text>', 'grep text in all emails')
   .option('-p --profile <name>', 'use profile when sending email specified by name')
   .parse(process.argv);
@@ -62,14 +63,18 @@ function grep(text){
 }
 var options = {
   profile: program.profile,
-  quiet: program.send ? true:false
+  quiet: program.quiet ? true:false
 };
+
 var cb = function(err, msg){
-  if(err) clog.error(err);
-  else if(DEBUG === true){
-    clog.debug(msg);
+  if(err){
+    clog.error(err);
+  } 
+  else {
+    clog.info(msg);
   }
 };
+
 if(program.list){
   console.log("file     number subject");
   getEmails(function(mail){
@@ -89,10 +94,6 @@ else if(program.delete){
   });
 }
 else if(program.cat){
-  if(/\.email$/.test(program.cat)){
-    cat(program.cat);
-    return;
-  }
   var cs = program.cat.split(',');
   getEmails(function(mail){
     if(~cs.indexOf(mail.number + '')){
@@ -105,29 +106,46 @@ else if(program.grep){
       second = args.length > 0 ? args[0]:false;
   grep(program.grep);
 }
-else if(program.edit || program.send){
-  var file = program.edit || program.send;
-  if(/\.email$/.test(program.edit)){
-    options.file = file;
+else if(program.edit){//edit file and send
+  var file = program.edit;
+  if(/\d+/.test(file)){//file number
+    getEmails(function(mail){
+      if(mail.number == file){
+        options.file = path.resolve(__dirname,'../mails', mail.name + '.email');
+        sendmail(options, cb);
+      }
+    });
+  }else{
+    options.file = path.resolve(process.cwd(), file); 
     sendmail(options, cb);
-    return;
   }
-  getEmails(function(mail){
-    if(mail.number == file){
-      options.file = mail.name;
-      sendmail(options, cb);
-    }
-  });
 }
 else{
-  if(program.args[0]) {
-    fs.readFile(program.args[0], function(err, data){
+  var file = program.args[0];
+  if(file == '-'){
+    //sendmail(options, cb);
+    stdin();
+  }
+  else if(file) {
+    //read the file content as email content
+    fs.readFile(program.args[0], function(err, text){
       if(err) clog.error(err);
       else {
-        options.content = data;
+        options.content = text;
         sendmail(options, cb);
       }
     });
   }else sendmail(options, cb);
+}
+function stdin() {
+  var buf = '';
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('data', function(chunk){ buf += chunk;
+  });
+  process.stdin.on('end', function(){
+    // process.stdin.removeAllListeners();
+    // options.content = buf;
+    // sendmail(options, cb);
+  }).resume();
 }
 // vim:syntax=javascript:
