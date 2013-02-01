@@ -1,17 +1,16 @@
 {
   "server":{
-    "user":    "[name]", 
-    "password":"[password]", 
-    "host":    "[remote host]", 
-    "ssl":     [true/false],
-    "tls":     [true/false],
-    "port":    [port]
+    "type":"SMTP",
+    "auth":{
+        "user":"[name]",
+        "pass":"[password]"
+        },
+    "host":"[host]", 
+    "port":[port]
   },
   "headers":{
     "from":"[firstname lastname <yourename@xxx.com>]"
   },
-  "footer":"Thanks,<br />[yourname]\n",
   "contacts":{
-    "chemzqm":"Jack zhao <chemzqm@gmail.com>"
   }
 }
