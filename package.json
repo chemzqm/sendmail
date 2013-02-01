@@ -1,7 +1,7 @@
 {
   "name": "node_sendmail",
   "author": "chemzqm@gmail.com",
-  "version": "0.1.4",
+  "version": "1.0.1",
   "description": "send email using vim and markdown syntax",
   "homepage": "http://github.com/chemzqm/sendmail",
   "dependencies": {

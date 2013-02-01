@@ -9,7 +9,7 @@ var program = require('commander'),
     sendmail = require('../');
 
 program
-  .version('0.2.1')
+  .version('1.0.1')
   .usage('[options] [number|filename]')
   .description('edit a new email and send if no arguments except profile exist')
   .option('-l --list', 'show all mails with filename number subject')
