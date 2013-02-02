@@ -42,7 +42,7 @@ Make sure path `~/bin` is included in `$PATH`, if not, add below to your file `~
     "footer":"Thanks,<br />Jack\n",
     "contacts":{
       "chemzqm":"chemzqm <chemzqm@gmail.com>",
-      "qzhao":"Jack zhao <qzhao@tibco-support.com>"
+      "nick":"fullname <xx@xxx.com>"
     }
   }
   ```
