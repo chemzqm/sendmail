@@ -77,6 +77,8 @@ Contacts is used for convenient input of contacts emails, all the contact's name
   ``` bash
   $ sendmail filename
   ```
+  filter is not available yet.
+  
 * Mutiple support
   
   The email fields 'to', 'cc', 'attachment' could be multiple values seperated by ','
@@ -84,7 +86,7 @@ Contacts is used for convenient input of contacts emails, all the contact's name
 
 * Send *embeded image*, use the following tag in the html sention
   ``` 
-  @img('/path/to/file'[, 'imagename'])
+  @img('/path/to/file'*[, 'imagename'])
   ```
   Notice image name is *optional*
 
